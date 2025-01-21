@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "dist", // Output directory for compiled files
+    "module": "ESNext", // Use ES modules
+    "target": "ES6", // Target ES6
+    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Include DOM and ESNext libraries
+    "declaration": true, // Generate .d.ts type definitions
+    "jsx": "react", // Support JSX
+    "strict": true, // Enable strict type-checking
+    "esModuleInterop": true, // Enable ES module interop
+    "skipLibCheck": true, // Skip type-checking for library files
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"], // Include all files in the src directory
+  "exclude": ["node_modules", "dist"]
+}
