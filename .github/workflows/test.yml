@@ -23,8 +23,9 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Use Node.js 18 (or the version your project uses)
-          cache: 'npm' # Cache npm dependencies to speed up the workflow
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
 
       # Step 3: Install dependencies
       - name: Install dependencies
