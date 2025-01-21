@@ -13,10 +13,12 @@ export const Droppable = ({ id, children }: DroppableProps) => {
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
-      handleDragEnd(id);
+      if (draggedItem) {
+        handleDragEnd(id);
+      }
       setIsDraggingOver(false);
     },
-    [handleDragEnd, id]
+    [handleDragEnd, id, draggedItem]
   );
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
