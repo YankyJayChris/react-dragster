@@ -23,9 +23,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          node-version: 20
 
       # Step 3: Install dependencies
       - name: Install dependencies
