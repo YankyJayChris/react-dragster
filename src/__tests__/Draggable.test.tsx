@@ -1,38 +1,60 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, fireEvent } from '@testing-library/react';
 import { Draggable } from '../Draggable';
 import { DragDropProvider } from '../DragDropContext';
 
 describe('Draggable', () => {
-  const mockOnDragEnd = jest.fn();
-
-  beforeEach(() => {
-    mockOnDragEnd.mockClear();
-  });
+  const TestComponent = () => (
+    <Draggable id="test-id">
+      <div>Drag me</div>
+    </Draggable>
+  );
 
   it('renders children correctly', () => {
-    render(
-      <DragDropProvider onDragEnd={mockOnDragEnd}>
-        <Draggable id="drag-1">
-          <div>Drag Me</div>
-        </Draggable>
+    const { getByText } = render(
+      <DragDropProvider onDragEnd={() => {}}>
+        <TestComponent />
       </DragDropProvider>
     );
-
-    expect(screen.getByText('Drag Me')).toBeInTheDocument();
+    expect(getByText('Drag me')).toBeInTheDocument();
   });
 
   it('has draggable attributes', () => {
-    render(
-      <DragDropProvider onDragEnd={mockOnDragEnd}>
-        <Draggable id="drag-1">
-          <div>Drag Me</div>
-        </Draggable>
+    const { container } = render(
+      <DragDropProvider onDragEnd={() => {}}>
+        <TestComponent />
       </DragDropProvider>
     );
-
-    const draggable = screen.getByText('Drag Me').parentElement!;
+    const draggable = container.firstChild;
     expect(draggable).toHaveAttribute('draggable', 'true');
+  });
+
+  it('handles drag start event', () => {
+    const { container } = render(
+      <DragDropProvider onDragEnd={() => {}}>
+        <TestComponent />
+      </DragDropProvider>
+    );
+    const draggable = container.firstChild as HTMLElement;
+    
+    // Create a mock dataTransfer object
+    const dataTransfer = {
+      setData: jest.fn(),
+      getData: jest.fn(),
+    };
+    
+    fireEvent.dragStart(draggable, { dataTransfer });
+    expect(draggable).toHaveStyle({ opacity: '0.8' });
+  });
+
+  it('handles drag end event', () => {
+    const { container } = render(
+      <DragDropProvider onDragEnd={() => {}}>
+        <TestComponent />
+      </DragDropProvider>
+    );
+    const draggable = container.firstChild as HTMLElement;
+    fireEvent.dragEnd(draggable);
+    expect(draggable).toHaveStyle({ opacity: '1' });
   });
 });
