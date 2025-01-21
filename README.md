@@ -1,5 +1,7 @@
 # React Dragster
 
+![Test Status](https://github.com/YankyJayChris/react-dragster/actions/workflows/test.yml/badge.svg)
+
 A lightweight, customizable drag-and-drop library for React 19 with TypeScript support. Built with performance and ease of use in mind, React Dragster provides a simple yet powerful API for implementing drag-and-drop functionality in your React applications.
 
 ## Features
