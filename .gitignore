@@ -43,7 +43,7 @@ coverage/
 .node_repl_history
 
 # Optional lockfile
-package-lock.json
+# package-lock.json
 yarn.lock
 
 # Optional local development files
