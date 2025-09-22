@@ -1,3 +1,4 @@
+```markdown
 # React Dragster
 
 ![Test Status](https://github.com/YankyJayChris/react-dragster/actions/workflows/test.yml/badge.svg)
@@ -96,27 +97,92 @@ type DraggableProps = {
 
 React Dragster provides default inline styles for a modern, clean look with smooth animations, ensuring functionality out of the box. You can customize the appearance using the `className` prop on `Droppable` and `Draggable` components.
 
+#### Using Default Styles (Non-Tailwind Users)
+
+For users not using Tailwind CSS, you can import the optional `styles.css` file included in the package to apply default styling:
+
+```tsx
+import React from 'react';
+import { DragDropProvider, Droppable, Draggable } from 'react-dragster';
+import 'react-dragster/dist/styles.css'; // Import default styles
+
+const App = () => {
+  const handleDragEnd = ({ source, destination }) => {
+    console.log(`Item moved from ${source} to ${destination}`);
+  };
+
+  return (
+    <DragDropProvider onDragEnd={handleDragEnd}>
+      <Droppable id="droppable-1">
+        <Draggable id="draggable-1">Drag me!</Draggable>
+      </Droppable>
+    </DragDropProvider>
+  );
+};
+```
+
+The `styles.css` file includes styles for the following classes:
+- `.droppable`: Base styles for droppable areas.
+- `.droppable--dragging-over`: Styles applied when dragging over a droppable area.
+- `.draggable`: Base styles for draggable items.
+- `.draggable--dragging`: Styles applied when an item is being dragged.
+
 #### Using Tailwind CSS
 
 If your project uses Tailwind CSS, you can pass Tailwind classes via the `className` prop:
 
 ```tsx
-<Droppable
-  id="droppable-1"
-  className="p-6 m-6 bg-gray-200 rounded-lg border-2 border-dashed border-transparent hover:border-blue-500"
->
-  <Draggable
-    id="draggable-1"
-    className="p-4 m-4 bg-white border border-gray-300 rounded-md cursor-grab hover:opacity-80"
-  >
-    Drag me!
-  </Draggable>
-</Droppable>
+import React from 'react';
+import { DragDropProvider, Droppable, Draggable } from 'react-dragster';
+
+// Optional: Import default styles for non-Tailwind users
+// import 'react-dragster/dist/styles.css';
+
+const App = () => {
+  const handleDragEnd = ({ source, destination }: { source: string; destination: string }) => {
+    console.log(`Item ${source} was dropped into ${destination}`);
+  };
+
+  return (
+    <DragDropProvider onDragEnd={handleDragEnd}>
+      <Droppable
+        id="droppable-1"
+        className="p-6 m-6 bg-gray-200 rounded-lg border-2 border-dashed border-transparent hover:border-blue-500"
+      >
+        <Draggable
+          id="draggable-1"
+          className="p-4 m-4 bg-white border border-gray-300 rounded-md cursor-grab hover:opacity-80"
+        >
+          Item 1
+        </Draggable>
+        <Draggable
+          id="draggable-2"
+          className="p-4 m-4 bg-white border border-gray-300 rounded-md cursor-grab hover:opacity-80"
+        >
+          Item 2
+        </Draggable>
+      </Droppable>
+      <Droppable
+        id="droppable-2"
+        className="p-6 m-6 bg-gray-200 rounded-lg border-2 border-dashed border-transparent hover:border-blue-500"
+      >
+        <Draggable
+          id="draggable-3"
+          className="p-4 m-4 bg-white border border-gray-300 rounded-md cursor-grab hover:opacity-80"
+        >
+          Item 3
+        </Draggable>
+      </Droppable>
+    </DragDropProvider>
+  );
+};
+
+export default App;
 ```
 
 #### Using Custom CSS
 
-For projects without Tailwind, you can use the default inline styles or provide custom CSS by targeting the component classes:
+You can override the default styles by targeting the component classes in your own CSS file:
 
 ```css
 .droppable {
@@ -136,41 +202,11 @@ For projects without Tailwind, you can use the default inline styles or provide 
 }
 ```
 
-Optionally, you can include a `styles.css` file with default styles (provided in the package documentation) for non-Tailwind users:
-
-```css
-.droppable {
-  padding: 16px;
-  margin: 16px;
-  background-color: #f1f1f1;
-  border-radius: 8px;
-  transition: border 0.2s ease;
-}
-
-.droppable--dragging-over {
-  border: 2px dashed #007bff;
-}
-
-.draggable {
-  padding: 8px;
-  margin: 8px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: grab;
-  transition: transform 0.2s ease;
-}
-
-.draggable--dragging {
-  opacity: 0.8;
-  transition: none;
-}
-```
-
 #### Notes on Styling
 - **Default Styles**: Inline styles ensure the components work out of the box without requiring external CSS.
 - **Customizable**: Use the `className` prop to add Tailwind classes or custom CSS classes.
 - **No Dependencies**: The package does not depend on Tailwind CSS, making it compatible with any styling solution.
+- **Optional CSS**: Import `react-dragster/dist/styles.css` for default styles if not using Tailwind or custom CSS.
 
 ### TypeScript Support
 
@@ -210,3 +246,4 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 ## License
 
 MIT © [IGIHOZO Jean Christian]
+```
