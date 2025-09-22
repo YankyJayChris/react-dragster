@@ -1,44 +1,84 @@
 // src/__tests__/Droppable.test.tsx
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { Draggable } from '../Draggable';
 import { Droppable } from '../Droppable';
 import { DragDropProvider } from '../DragDropContext';
 
-describe('Droppable', () => {
-  const mockOnDragEnd = jest.fn();
-
-  beforeEach(() => {
-    mockOnDragEnd.mockClear();
-  });
+describe('Draggable', () => {
+  const TestComponent = ({ className }: { className?: string }) => (
+    <Droppable id="drop-1">
+      <Draggable id="test-id" className={className}>
+        <div>Drag me</div>
+      </Draggable>
+    </Droppable>
+  );
 
   it('renders children correctly', () => {
-    render(
-      <DragDropProvider onDragEnd={mockOnDragEnd}>
-        <Droppable id="drop-1">
-          <div>Test Child</div>
-        </Droppable>
+    const { getByText } = render(
+      <DragDropProvider onDragEnd={() => {}}>
+        <TestComponent />
       </DragDropProvider>
     );
-
-    expect(screen.getByText('Test Child')).toBeInTheDocument();
+    expect(getByText('Drag me')).toBeInTheDocument();
   });
 
-  it('handles drag over and drag leave', () => {
-    render(
-      <DragDropProvider onDragEnd={mockOnDragEnd}>
-        <Droppable id="drop-1">
-          <div>Droppable Content</div>
-        </Droppable>
+  it('has draggable attributes', () => {
+    const { container } = render(
+      <DragDropProvider onDragEnd={() => {}}>
+        <TestComponent />
       </DragDropProvider>
     );
+    const draggable = container.querySelector('.draggable');
+    expect(draggable).toHaveAttribute('draggable', 'true');
+  });
 
-    const droppable = screen.getByText('Droppable Content').parentElement!;
-    
+  it('handles drag start event', () => {
+    const { container } = render(
+      <DragDropProvider onDragEnd={() => {}}>
+        <TestComponent />
+      </DragDropProvider>
+    );
+    const draggable = container.querySelector('.draggable') as HTMLElement;
+
+    const dataTransfer = {
+      setData: jest.fn(),
+      getData: jest.fn(),
+    };
+
+    fireEvent.dragStart(draggable, { dataTransfer });
+    expect(draggable).toHaveClass('draggable--dragging');
+  });
+
+  it('handles drag end event', () => {
+    const { container } = render(
+      <DragDropProvider onDragEnd={() => {}}>
+        <TestComponent />
+      </DragDropProvider>
+    );
+    const draggable = container.querySelector('.draggable') as HTMLElement;
+    const droppable = container.querySelector('.droppable') as HTMLElement;
+
+    const dataTransfer = {
+      setData: jest.fn(),
+      getData: jest.fn().mockReturnValue('test-id'),
+    };
+
+    fireEvent.dragStart(draggable, { dataTransfer });
     fireEvent.dragOver(droppable);
-    expect(droppable).toHaveStyle({ border: '2px dashed #007bff' });
+    fireEvent.drop(droppable, { dataTransfer });
+    expect(draggable).not.toHaveClass('draggable--dragging');
+  });
 
-    fireEvent.dragLeave(droppable);
-    expect(droppable).toHaveStyle({ border: '2px dashed transparent' });
+  it('applies custom className prop', () => {
+    const { container } = render(
+      <DragDropProvider onDragEnd={() => {}}>
+        <TestComponent className="custom-draggable" />
+      </DragDropProvider>
+    );
+    const draggable = container.querySelector('.draggable');
+    expect(draggable).toHaveClass('draggable');
+    expect(draggable).toHaveClass('custom-draggable');
   });
 });

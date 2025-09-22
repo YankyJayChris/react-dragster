@@ -1,0 +1,26 @@
+.droppable {
+    padding: 16px;
+    margin: 16px;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    transition: border 0.2s ease;
+  }
+  
+  .droppable--dragging-over {
+    border: 2px dashed #007bff;
+  }
+  
+  .draggable {
+    padding: 8px;
+    margin: 8px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: grab;
+    transition: transform 0.2s ease;
+  }
+  
+  .draggable--dragging {
+    opacity: 0.8;
+    transition: none;
+  }

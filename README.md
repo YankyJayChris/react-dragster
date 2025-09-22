@@ -9,7 +9,7 @@ A lightweight, customizable drag-and-drop library for React 19 with TypeScript s
 - 🚀 Lightweight and performant
 - 🎯 Smooth drag-and-drop animations with visual feedback
 - 📦 Built with TypeScript for excellent type safety
-- 🎨 Customizable styling with sensible defaults
+- 🎨 Customizable styling with sensible defaults (supports Tailwind CSS and custom CSS)
 - 🔄 Real-time position tracking
 - 💡 Simple and intuitive API
 - ⚛️ Compatible with React 19
@@ -59,7 +59,7 @@ const App = () => {
 
 #### DragDropProvider
 
-The context provider that enables drag and drop functionality.
+The context provider that enables drag-and-drop functionality.
 
 ```tsx
 type DragDropProviderProps = {
@@ -76,6 +76,7 @@ A container that can receive draggable items.
 type DroppableProps = {
   id: string;
   children: ReactNode;
+  className?: string; // Optional className for custom or Tailwind CSS styling
 };
 ```
 
@@ -87,28 +88,89 @@ An item that can be dragged.
 type DraggableProps = {
   id: string;
   children: ReactNode;
+  className?: string; // Optional className for custom or Tailwind CSS styling
 };
 ```
 
 ### Styling
 
-Each component comes with default styling that you can override:
+React Dragster provides default inline styles for a modern, clean look with smooth animations, ensuring functionality out of the box. You can customize the appearance using the `className` prop on `Droppable` and `Draggable` components.
 
-- **Droppable** areas have a subtle background and show a dashed border when being dragged over
-- **Draggable** items have a white background, subtle shadow, and smooth transition animations
-- All components are styled for a modern, clean look while maintaining excellent usability
+#### Using Tailwind CSS
 
-You can override the default styles by targeting the components with CSS:
+If your project uses Tailwind CSS, you can pass Tailwind classes via the `className` prop:
+
+```tsx
+<Droppable
+  id="droppable-1"
+  className="p-6 m-6 bg-gray-200 rounded-lg border-2 border-dashed border-transparent hover:border-blue-500"
+>
+  <Draggable
+    id="draggable-1"
+    className="p-4 m-4 bg-white border border-gray-300 rounded-md cursor-grab hover:opacity-80"
+  >
+    Drag me!
+  </Draggable>
+</Droppable>
+```
+
+#### Using Custom CSS
+
+For projects without Tailwind, you can use the default inline styles or provide custom CSS by targeting the component classes:
 
 ```css
-.your-draggable-class {
-  /* Your custom styles */
+.droppable {
+  /* Custom styles for droppable areas */
 }
 
-.your-droppable-class {
-  /* Your custom styles */
+.droppable--dragging-over {
+  /* Styles when dragging over a droppable area */
+}
+
+.draggable {
+  /* Custom styles for draggable items */
+}
+
+.draggable--dragging {
+  /* Styles when an item is being dragged */
 }
 ```
+
+Optionally, you can include a `styles.css` file with default styles (provided in the package documentation) for non-Tailwind users:
+
+```css
+.droppable {
+  padding: 16px;
+  margin: 16px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  transition: border 0.2s ease;
+}
+
+.droppable--dragging-over {
+  border: 2px dashed #007bff;
+}
+
+.draggable {
+  padding: 8px;
+  margin: 8px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: grab;
+  transition: transform 0.2s ease;
+}
+
+.draggable--dragging {
+  opacity: 0.8;
+  transition: none;
+}
+```
+
+#### Notes on Styling
+- **Default Styles**: Inline styles ensure the components work out of the box without requiring external CSS.
+- **Customizable**: Use the `className` prop to add Tailwind classes or custom CSS classes.
+- **No Dependencies**: The package does not depend on Tailwind CSS, making it compatible with any styling solution.
 
 ### TypeScript Support
 
@@ -116,7 +178,7 @@ React Dragster is written in TypeScript and provides full type definitions out o
 
 ### Advanced Usage
 
-You can access the drag and drop context in your custom components using the `useDragDropContext` hook:
+You can access the drag-and-drop context in your custom components using the `useDragDropContext` hook:
 
 ```tsx
 import { useDragDropContext } from 'react-dragster';

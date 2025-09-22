@@ -1,7 +1,8 @@
+// src/__tests__/DragDropContext.test.tsx
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { DragDropProvider, useDragDropContext } from '../DragDropContext';
+import { DragDropProvider, useDragDropContext, Droppable, Draggable } from '../index';
 
 const TestComponent = () => {
   const { handleDragStart, handleDragEnd, draggedItem, draggedItemPosition, updateDraggedItemPosition } = useDragDropContext();
@@ -92,5 +93,39 @@ describe('DragDropProvider', () => {
     fireEvent.click(updateButton);
 
     expect(screen.getByTestId('position')).toHaveTextContent('100,100');
+  });
+
+  it('works with Droppable and Draggable components', () => {
+    render(
+      <DragDropProvider onDragEnd={mockOnDragEnd}>
+        <Droppable id="drop-1">
+          <Draggable id="drag-1">
+            <div data-testid="draggable-content">Drag me</div>
+          </Draggable>
+        </Droppable>
+      </DragDropProvider>
+    );
+
+    const draggable = screen.getByTestId('draggable-content').parentElement!;
+    const droppable = screen.getByTestId('draggable-content').parentElement!.parentElement!;
+
+    const dataTransfer = {
+      setData: jest.fn(),
+      getData: jest.fn().mockReturnValue('drag-1'),
+    };
+
+    fireEvent.dragStart(draggable, { dataTransfer });
+    expect(draggable).toHaveClass('draggable--dragging');
+
+    fireEvent.dragOver(droppable);
+    expect(droppable).toHaveClass('droppable--dragging-over');
+
+    fireEvent.drop(droppable, { dataTransfer });
+    expect(mockOnDragEnd).toHaveBeenCalledWith({
+      source: 'drag-1',
+      destination: 'drop-1'
+    });
+    expect(draggable).not.toHaveClass('draggable--dragging');
+    expect(droppable).not.toHaveClass('droppable--dragging-over');
   });
 });

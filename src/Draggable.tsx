@@ -1,12 +1,14 @@
+// Draggable.tsx
 import React, { useCallback, useRef } from 'react';
 import { useDragDropContext } from './DragDropContext';
 
 type DraggableProps = {
   id: string;
   children: React.ReactNode;
+  className?: string;
 };
 
-export const Draggable = ({ id, children }: DraggableProps) => {
+export const Draggable = ({ id, children, className = '' }: DraggableProps) => {
   const { handleDragStart, draggedItem, draggedItemPosition, updateDraggedItemPosition } = useDragDropContext();
   const draggableRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +40,7 @@ export const Draggable = ({ id, children }: DraggableProps) => {
       draggable
       onDragStart={handleDragStartLocal}
       onDrag={handleDrag}
+      className={`draggable ${isDragging ? 'draggable--dragging' : ''} ${className}`}
       style={{
         transform: isDragging
           ? `translate(${draggedItemPosition.x}px, ${draggedItemPosition.y}px)`

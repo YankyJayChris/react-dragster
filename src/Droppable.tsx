@@ -1,12 +1,14 @@
+// Droppable.tsx
 import React, { useCallback, useState } from 'react';
 import { useDragDropContext } from './DragDropContext';
 
 type DroppableProps = {
   id: string;
   children: React.ReactNode;
+  className?: string;
 };
 
-export const Droppable = ({ id, children }: DroppableProps) => {
+export const Droppable = ({ id, children, className = '' }: DroppableProps) => {
   const { handleDragEnd, draggedItem } = useDragDropContext();
   const [isDraggingOver, setIsDraggingOver] = useState(false);
 
@@ -35,6 +37,7 @@ export const Droppable = ({ id, children }: DroppableProps) => {
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
+      className={`droppable ${isDraggingOver ? 'droppable--dragging-over' : ''} ${className}`}
       style={{
         border: isDraggingOver ? '2px dashed #007bff' : '2px dashed transparent',
         padding: '16px',
