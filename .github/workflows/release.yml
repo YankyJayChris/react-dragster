@@ -18,14 +18,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better provenance statement
+          fetch-depth: 0  # Fetch full history for semantic-release
           persist-credentials: false  # For @semantic-release/git on protected branches
+
+      - name: Sync with Remote
+        run: |
+          git fetch origin
+          git reset --hard origin/main
+        continue-on-error: true  # Continue even if sync fails (e.g., no changes)
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'  # Use latest LTS (adjust if needed)
+          node-version: '20'  # Use latest LTS
           cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
         run: npm ci
