@@ -1,4 +1,3 @@
-```markdown
 # React Dragster
 
 ![Test Status](https://github.com/YankyJayChris/react-dragster/actions/workflows/test.yml/badge.svg)
@@ -247,4 +246,3 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 ## License
 
 MIT © [IGIHOZO Jean Christian]
-```
